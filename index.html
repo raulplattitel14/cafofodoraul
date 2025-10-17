@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Wi-Fi Cafofo — Acesso</title>
+  <style>
+    :root{font-family:Inter, Arial, sans-serif}
+    body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f2f5f9;color:#111}
+    .card{width:94%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.08);padding:22px;text-align:center}
+    h1{font-size:1.4rem;margin:8px 0 4px 0}
+    p.lead{color:#444;margin:0 0 16px;font-size:0.95rem}
+    input[type="password"], input[type="text"]{width:100%;padding:12px;border-radius:10px;border:1px solid #cbd5e1;font-size:1rem;box-sizing:border-box}
+    .btn{display:block;width:100%;padding:12px;border-radius:10px;border:0;font-size:1rem;cursor:pointer;margin-top:12px}
+    .btn-primary{background:#0b6efd;color:#fff}
+    .btn-primary:disabled{background:#9ec5fe}
+    .small{font-size:0.85rem;color:#666;margin-top:8px}
+    .terms{display:flex;gap:10px;align-items:flex-start;margin-top:12px;text-align:left}
+    .error{color:#b91c1c;margin-top:8px;font-weight:600}
+    footer{margin-top:16px;font-size:0.8rem;color:#8b8f95}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Bem-vindo ao Wi-Fi <strong>Cafofo</strong> 🏠</h1>
+    <p class="lead">Para se conectar à internet, digite o código de acesso fornecido pelo Raul para acessar o <strong>Cafofo do Raul</strong>.</p>
+
+    <label for="accessCode" class="small" style="display:block;text-align:left;margin-bottom:6px">Código de Acesso</label>
+    <input id="accessCode" type="password" inputmode="text" placeholder="Digite o código">
+
+    <div class="terms">
+      <input id="acceptTerms" type="checkbox">
+      <label for="acceptTerms"><strong>Li e aceito os termos de uso</strong></label>
+    </div>
+
+    <button id="enterBtn" class="btn btn-primary" disabled>Entrar no Wi-Fi</button>
+    <div id="errorMsg" class="error" style="display:none"></div>
+
+    <footer>© 2025 Cafofo do Raul</footer>
+  </div>
+
+  <script>
+    const ACCESS_CODE = "cafofodoraul1410";
+    const SUCCESS_URL = "http://splash.hotspotsystem.com/success";
+
+    const codeInput = document.getElementById('accessCode');
+    const acceptTerms = document.getElementById('acceptTerms');
+    const enterBtn = document.getElementById('enterBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function updateButton(){
+      enterBtn.disabled = !(acceptTerms.checked && codeInput.value.trim().length > 0);
+    }
+
+    acceptTerms.addEventListener('change', updateButton);
+    codeInput.addEventListener('input', updateButton);
+
+    enterBtn.addEventListener('click', () => {
+      const entered = codeInput.value.trim();
+      if(entered.toLowerCase() === ACCESS_CODE.toLowerCase()){
+        window.location.href = SUCCESS_URL;
+      } else {
+        errorMsg.textContent = "Código incorreto. Verifique com a equipe do Cafofo.";
+        errorMsg.style.display = "block";
+      }
+    });
+
+    codeInput.addEventListener('keypress', e => {
+      if(e.key === 'Enter' && !enterBtn.disabled) enterBtn.click();
+    });
+  </script>
+</body>
+</html>
